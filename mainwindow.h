@@ -20,9 +20,14 @@ public:
 private slots:
     void on_pushButton_calculate_clicked();
     void on_pushButton_clear_clicked();
-    void onInputValueChanged(double val);
+    void onInputValueChanged(double);
+
+    void on_spinBox_odometer_valueChanged(int arg1);
+
+    void on_spinBox_quota_valueChanged(int);
 
 private:
     Ui::MainWindow *ui;
+    void on_quota_spinBox();
 };
 #endif // MAINWINDOW_H

@@ -30,6 +30,8 @@ void MainWindow::performCalculation()
 
     ui->lineEdit_dollarPerKm->setText(QString::number(dollarPerKm, 'f', 3));
     ui->lineEdit_totalCost->setText(QString::number(totalCost, 'f', 2));
+
+    on_spinBox_odometer_valueChanged(0);
 }
 
 void MainWindow::on_pushButton_calculate_clicked()
@@ -47,8 +49,34 @@ void MainWindow::on_pushButton_clear_clicked()
     ui->lineEdit_totalCost->setText("");
 }
 
-void MainWindow::onInputValueChanged(double val)
+void MainWindow::onInputValueChanged(double)
 {
     performCalculation();
 }
 
+
+void MainWindow::on_spinBox_odometer_valueChanged(int)
+{
+    on_quota_spinBox();
+}
+
+void MainWindow::on_spinBox_quota_valueChanged(int)
+{
+    on_quota_spinBox();
+}
+
+void MainWindow::on_quota_spinBox()
+{
+    QDate today = QDate::currentDate();
+    ui->dateEdit_startDate->dateTime().date().toJulianDay();
+    ui->dateEdit_endDate->dateTime().date().toJulianDay();
+
+    ui->spinBox_daysRemaining->setValue(ui->dateEdit_endDate->dateTime().date().toJulianDay() - today.toJulianDay());
+
+    int daysDriven = today.toJulianDay() - ui->dateEdit_startDate->dateTime().date().toJulianDay();
+    ui->spinBox_daysDriven->setValue(daysDriven);
+
+    ui->doubleSpinBox_averageDaily->setValue(ui->spinBox_odometer->value() / (double)daysDriven);
+
+    ui->doubleSpinBox_dailyLimit->setValue(((double)ui->spinBox_quota->value() - ui->spinBox_odometer->value()) / (double)ui->spinBox_daysRemaining->value());
+}
